@@ -22,6 +22,7 @@ namespace AdoNet2
                 Console.WriteLine("5. Показати товар з мінімальною кількістю.");
                 Console.WriteLine("6. Показати товар з мінімальною собівартістю.");
                 Console.WriteLine("7. Показати товар з максимальною собівартістю.");
+                Console.WriteLine("8. Показати товар заданої категорії");
                 Console.WriteLine("9. Показати товар заданого постачальника.");
 
                 Console.WriteLine("0. Вийти з програми");
@@ -61,7 +62,7 @@ namespace AdoNet2
                                 DisplayProductWithMaxCost(connection);
                                 break;
                             case 8:
-                                
+                                DisplayProductsByType(connection);
                                 break;
                             case 9:
                                 DisplayProductsBySupplier(connection);
@@ -188,7 +189,7 @@ namespace AdoNet2
         
         static void DisplayProductsByType(SqlConnection connection)
         {
-            using (SqlCommand command = new SqlCommand("SELECT p.ProductName FROM Products p JOIN Suppliers s ON p.SupplierID = s.SupplierID WHERE s.SupplierID = 3;", connection))
+            using (SqlCommand command = new SqlCommand("SELECT p.ProductName FROM Products p WHERE p.ProductType = 'Type 1';", connection))
             {
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
