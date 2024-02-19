@@ -24,6 +24,8 @@ namespace AdoNet2
                 Console.WriteLine("7. Показати товар з максимальною собівартістю.");
                 Console.WriteLine("8. Показати товар заданої категорії");
                 Console.WriteLine("9. Показати товар заданого постачальника.");
+                Console.WriteLine("10. Показати товар який знаходиться на складі найдовше з усіх.");
+                Console.WriteLine("11. Показати середню кількість товарів за кожним типом товару.");
 
                 Console.WriteLine("0. Вийти з програми");
 
@@ -68,10 +70,10 @@ namespace AdoNet2
                                 DisplayProductsBySupplier(connection);
                                 break;
                             case 10:
-                                
+                                ShowProductWithLongestSupplyDate(connection);
                                 break;
                             case 11:
-                                
+                                ShowAverageQuantityByProductType(connection);
                                 break;
                             case 0:
                                 Console.WriteLine("Poka!");
@@ -196,6 +198,34 @@ namespace AdoNet2
                 {
                     Console.WriteLine($"{reader["ProductName"]}");
                 }
+            }
+            
+        }
+
+        static void ShowProductWithLongestSupplyDate(SqlConnection connection)
+        {
+            using (SqlCommand command = new SqlCommand("SELECT TOP 1 ProductName FROM Products ORDER BY SupplyDate DESC;", connection))
+            {
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine($"Товар, який знаходиться на складі найдовше: {reader["ProductName"]}"); ;
+                }
+
+            }
+        }
+
+        static void ShowAverageQuantityByProductType(SqlConnection connection)
+        {
+
+            using (SqlCommand command = new SqlCommand("SELECT ProductType, AVG(Quantity) AS AverageQuantity FROM Products GROUP BY ProductType", connection))
+            {
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine($"Тип: {reader["ProductType"]}, Середня кількість: {reader["AverageQuantity"]}");
+                }
+
             }
             
         }
